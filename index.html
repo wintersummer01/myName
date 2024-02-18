@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<title>청송갬빗 참가자 명단 기록</title>
+		<!--output.setTitle(g_title);-->
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!--output.addMetaTag("viewport", "width=device-width, initial-scale=1");-->
+
+		<style>
+			@import url(https://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+			*{
+				font-family:Nanum Gothic;
+				font-size:20px;
+				text-align:center
+			}
+			body,html{
+				height:100%
+			}
+			body{
+				display:table;
+				height:100%;
+				margin:0 auto;
+				width:100%
+			}
+			.container{
+				background:rgba(0,0,0,.05);
+				display:table-cell;
+				vertical-align:middle;
+				width:100%
+			}
+			.center{
+				background:rgba(255,255,255);
+				border-radius:10px;
+				box-shadow:0 5px 50px 0 rgba(0,0,0,.4);
+				display:inline-block;
+				position:relative;
+			}
+			.text{
+				font-size:10px
+			}
+			</style>
+
+
+    <script src="./code.js"></script>
+	</head>
+
+<body>
+<div class="container">
+	<div class="center" style="width: 500px">
+		<div style="margin: 20px"></div>
+		<div id="title"></div>
+		<div style="margin: 15px"></div>
+		<b><div id="value", style="font-size: 30px;color:#000465"></div></b>
+		<div style="margin: 15px"></div>
+		<div id="period"></div>
+		<div style="margin: 20px"></div>
+	</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+function getKoreanNumber(number) {
+    const koreanNumber = ['', '일', '이', '삼', '사', '오', '육', '칠', '팔', '구'];
+    const tenUnit = ['', '십', '백', '천'];
+    const tenThousandUnit = ['조', '억', '만', ''];
+    const unit = 10000;
+
+    let answer = '';
+
+    while (number > 0) {
+    const mod = number % unit;
+    const modToArray = mod.toString().split('');
+    const length = modToArray.length - 1;
+
+        const modToKorean = modToArray.reduce((acc, value, index) => {
+        const valueToNumber = +value;
+        if (!valueToNumber) return acc;
+        // 단위가 십 이상인 '일'글자는 출력하지 않는다. ex) 일십 -> 십
+        const numberToKorean = index < length && valueToNumber === 1 ? '' : koreanNumber[valueToNumber];
+        return `${acc}${numberToKorean}${tenUnit[length - index]}`;
+    }, '');
+
+    answer = `${modToKorean}${tenThousandUnit.pop()}${answer}`;
+    number = Math.floor(number / unit);
+    }
+
+    return answer.replace();
+}
+       
+date = new Date();
+year = date.getFullYear();
+month = date.getMonth() + 1;
+day = date.getDate();
+
+ref_date = new Date(year=2024, month=1, day=16)
+date_diff = Math.floor((date - ref_date) / (1000*60*60*24))
+money = date_diff * 1000000
+
+money_text = getKoreanNumber(money) + "원"
+
+$("#title").text("오늘 저의 이름은...");
+$("#value").text(money_text);
+$("#period").text("입니다!");
+</script>
+</body>
+</html>
+
